@@ -8,14 +8,18 @@ on:
 jobs:
   update-patches:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         branch: [ipq60xx-devel, ipq60xx-devel_nss]
         target-path: [qualcommax/patches-6.6, qualcommax/patches-6.6-nss]
+        include:
+          - branch: ipq60xx-devel
+            target-path: qualcommax/patches-6.6
+          - branch: ipq60xx-devel_nss
+            target-path: qualcommax/patches-6.6-nss
 
     steps:
-      - name: Checkout repository
+      - name: Checkout the repository
         uses: actions/checkout@v2
 
       - name: Clone source repository
@@ -44,5 +48,4 @@ jobs:
 
           git add ${{ matrix.target-path }}
           git commit -m "Update patches from ${{ matrix.branch }} on $(date +'%Y-%m-%d')"
-          git pull --rebase origin main
-          git push --force origin HEAD:main
+           git push --force origin HEAD:main
