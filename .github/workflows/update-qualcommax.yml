@@ -2,7 +2,7 @@ name: Update patches
 
 on:
   schedule:
-    - cron: '16 16 * * *'  # 每天的0点（+8时区）运行
+    - cron: '0 16 * * *'  # 每天的0点（+8时区）运行
   workflow_dispatch:  # 允许手动触发
 
 jobs:
@@ -19,42 +19,22 @@ jobs:
             target-path: qualcommax/patches-6.6-nss
 
     steps:
-      - name: Checkout the repo
+      - name: Checkout the repository
         uses: actions/checkout@v2
-
-      - name: Set up Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Clone source repository
         run: git clone --depth 1 --branch ${{ matrix.branch }} https://github.com/JiaY-shi/openwrt.git source_repo
 
       - name: Copy patches
         run: |
-          mkdir -p ${{ matrix.target-path }}
-          cp -r source_repo/target/linux/qualcommax/patches-6.6/. ${{ matrix.target-path }}/
+          rm -rf ${{ matrix.target-path }}
+          cp -r source_repo/target/linux/qualcommax/patches-6.6/. ${{ matrix.target-path }}
 
-      - name: Check for changes
-        id: changes
+      - name: Commit and push changes
         run: |
-          if git diff --quiet; then
-            echo "::set-output name=changes::false"
-          else
-            echo "::set-output name=changes::true"
-          fi
+          git config user.email "github-actions@github.com"
+          git config user.name "GitHub Actions"
 
-      - name: Commit changes
-        if: steps.changes.outputs.changes == 'true'
-        run: |
-          git add .
+          git add ${{ matrix.target-path }}
           git commit -m "Update patches from ${{ matrix.branch }} on $(date +'%Y-%m-%d')"
-
-      - name: Pull and rebase before push
-        if: steps.changes.outputs.changes == 'true'
-        run: |
-          git pull --rebase origin main
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}.git HEAD:main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_PAT: ${{ secrets.GH_PAT }}
+          git push origin HEAD:main
