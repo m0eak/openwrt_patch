@@ -37,4 +37,6 @@ jobs:
 
           git add ${{ matrix.target-path }}
           git commit -m "Update patches from ${{ matrix.branch }} on $(date +'%Y-%m-%d')"
-          git push origin HEAD:main
+
+          # 使用 --force 选项强制推送
+          git push --force origin HEAD:main
