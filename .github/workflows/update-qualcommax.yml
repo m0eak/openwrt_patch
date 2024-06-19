@@ -29,14 +29,23 @@ jobs:
         run: |
           rm -rf ${{ matrix.target-path }}
           cp -r source_repo/target/linux/qualcommax/patches-6.6/. ${{ matrix.target-path }}
+          ls -la ${{ matrix.target-path }}  # 输出目标路径下的文件列表，用于调试
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "::set-output name=changes::false"
+          else
+            echo "::set-output name=changes::true"
+          fi
 
       - name: Commit and push changes
+        if: steps.changes.outputs.changes == 'true'
         run: |
           git config user.email "github-actions@github.com"
           git config user.name "GitHub Actions"
 
           git add ${{ matrix.target-path }}
           git commit -m "Update patches from ${{ matrix.branch }} on $(date +'%Y-%m-%d')"
-
-          # 使用 --force 选项强制推送
-          git push --force origin HEAD:main
+           git push --force origin HEAD:main
