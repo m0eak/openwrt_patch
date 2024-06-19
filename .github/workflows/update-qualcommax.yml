@@ -27,7 +27,7 @@ jobs:
 
       - name: Copy patches
         run: |
-          rm -rf ${{ matrix.target-path }}
+          rm -rf ${{ matrix.target-path }} || true
           cp -r source_repo/target/linux/qualcommax/patches-6.6/. ${{ matrix.target-path }}
           ls -la ${{ matrix.target-path }}  # 输出目标路径下的文件列表，用于调试
 
