@@ -11,8 +11,11 @@ jobs:
 
     strategy:
       matrix:
-        branch: [ipq60xx-devel, ipq60xx-devel_nss]
-        target-path: [qualcommax/patches-6.6, qualcommax/patches-6.6-nss]
+        config:
+          - branch: ipq60xx-devel
+            target-path: qualcommax/patches-6.6
+          - branch: ipq60xx-devel_nss
+            target-path: qualcommax/patches-6.6-nss
 
     steps:
       - name: Checkout the repository
@@ -25,19 +28,19 @@ jobs:
           git config user.name "GitHub Actions"
 
       - name: Clone source repository
-        run: git clone --depth 1 --branch ${{ matrix.branch }} https://github.com/JiaY-shi/openwrt.git source_repo
+        run: git clone --depth 1 --branch ${{ matrix.config.branch }} https://github.com/JiaY-shi/openwrt.git source_repo
 
       - name: Copy patches
         run: |
-          rm -rf ${{ matrix.target-path }} || true
-          mkdir -p ${{ matrix.target-path }}
-          cp -r source_repo/target/linux/qualcommax/patches-6.6/. ${{ matrix.target-path }}
-          ls -la ${{ matrix.target-path }}  # 输出目标路径下的文件列表，用于调试
+          rm -rf ${{ matrix.config.target-path }} || true
+          mkdir -p ${{ matrix.config.target-path }}
+          cp -r source_repo/target/linux/qualcommax/patches-6.6/. ${{ matrix.config.target-path }}
+          ls -la ${{ matrix.config.target-path }}  # 输出目标路径下的文件列表，用于调试
 
       - name: Check for changes
         id: changes
         run: |
-          git add ${{ matrix.target-path }}
+          git add ${{ matrix.config.target-path }}
           if git diff-index --quiet HEAD --; then
             echo "changes=false" >> $GITHUB_ENV
           else
@@ -50,7 +53,7 @@ jobs:
       - name: Commit and push changes
         if: env.changes == 'true'
         run: |
-          git commit -m "Update patches from ${{ matrix.branch }} on $(date +'%Y-%m-%d')"
+          git commit -m "Update patches from ${{ matrix.config.branch }} on $(date +'%Y-%m-%d')"
           git status  # 输出当前的 Git 状态，用于调试
 
           # Pull the latest changes to avoid conflicts
