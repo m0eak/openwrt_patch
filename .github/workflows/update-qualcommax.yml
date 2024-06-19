@@ -32,16 +32,16 @@ jobs:
         id: changes
         run: |
           if git diff --quiet; then
-            echo "::set-output name=changes::false"
+            echo "changes=false" >> $GITHUB_ENV
           else
-            echo "::set-output name=changes::true"
+            echo "changes=true" >> $GITHUB_ENV
           fi
 
       - name: Show Git status
         run: git status
 
       - name: Commit and push changes
-        if: steps.changes.outputs.changes == 'true'
+        if: env.changes == 'true'
         run: |
           git config user.email "github-actions@github.com"
           git config user.name "GitHub Actions"
