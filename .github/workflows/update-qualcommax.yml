@@ -1,0 +1,44 @@
+name: Update patches
+
+on:
+  schedule:
+    - cron: '16 16 * * *'  # 每天的0点（+8时区）运行
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  update-patches:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: [ipq60xx-devel, ipq60xx-devel_nss]
+        target-path: [qualcommax/patches-6.6, qualcommax/patches-6.6-nss]
+        include:
+          - branch: ipq60xx-devel
+            target-path: qualcommax/patches-6.6
+          - branch: ipq60xx-devel_nss
+            target-path: qualcommax/patches-6.6-nss
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Clone source repository
+        run: git clone --depth 1 --branch ${{ matrix.branch }} https://github.com/JiaY-shi/openwrt.git source_repo
+
+      - name: Copy patches
+        run: |
+          mkdir -p ${{ matrix.target-path }}
+          cp -r source_repo/target/linux/qualcommax/patches-6.6/. ${{ matrix.target-path }}/
+
+      - name: Commit changes
+        run: |
+          git add ${{ matrix.target-path }}
+          git commit -m "Update patches from ${{ matrix.branch }} on $(date +'%Y-%m-%d')"
+          git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
