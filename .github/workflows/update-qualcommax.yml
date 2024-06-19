@@ -8,15 +8,11 @@ on:
 jobs:
   update-patches:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         branch: [ipq60xx-devel, ipq60xx-devel_nss]
         target-path: [qualcommax/patches-6.6, qualcommax/patches-6.6-nss]
-        include:
-          - branch: ipq60xx-devel
-            target-path: qualcommax/patches-6.6
-          - branch: ipq60xx-devel_nss
-            target-path: qualcommax/patches-6.6-nss
 
     steps:
       - name: Checkout the repository
@@ -27,10 +23,10 @@ jobs:
 
       - name: Copy patches
         run: |
-            rm -rf ${{ matrix.target-path }} || true
-            mkdir -p ${{ matrix.target-path }}
-            cp -r source_repo/target/linux/qualcommax/patches-6.6/. ${{ matrix.target-path }}
-            ls -la ${{ matrix.target-path }}  # 输出目标路径下的文件列表，用于调试
+          rm -rf ${{ matrix.target-path }} || true
+          mkdir -p ${{ matrix.target-path }}
+          cp -r source_repo/target/linux/qualcommax/patches-6.6/. ${{ matrix.target-path }}
+          ls -la ${{ matrix.target-path }}  # 输出目标路径下的文件列表，用于调试
 
       - name: Check for changes
         id: changes
@@ -41,6 +37,9 @@ jobs:
             echo "::set-output name=changes::true"
           fi
 
+      - name: Show Git status
+        run: git status
+
       - name: Commit and push changes
         if: steps.changes.outputs.changes == 'true'
         run: |
@@ -49,4 +48,6 @@ jobs:
 
           git add ${{ matrix.target-path }}
           git commit -m "Update patches from ${{ matrix.branch }} on $(date +'%Y-%m-%d')"
-           git push --force origin HEAD:main
+          git status  # 输出当前的 Git 状态，用于调试
+
+          git push --force origin HEAD:main
