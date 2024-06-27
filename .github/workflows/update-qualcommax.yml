@@ -12,10 +12,8 @@ jobs:
     strategy:
       matrix:
         config:
-          - branch: ipq60xx-devel
+          - branch: main
             target-path: qualcommax/patches-6.6
-          - branch: ipq60xx-devel_nss
-            target-path: qualcommax/patches-6.6-nss
 
     steps:
       - name: Checkout the repository
@@ -28,7 +26,7 @@ jobs:
           git config user.name "GitHub Actions"
 
       - name: Clone source repository
-        run: git clone --depth 1 --branch ${{ matrix.config.branch }} https://github.com/JiaY-shi/openwrt.git source_repo
+        run: git clone --depth 1 --branch ${{ matrix.config.branch }} git@github.com:King-Of-Knights/openwrt-6.x.git source_repo
 
       - name: Copy patches
         run: |
