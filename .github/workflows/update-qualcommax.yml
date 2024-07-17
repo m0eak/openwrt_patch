@@ -32,7 +32,7 @@ jobs:
         run: |
           rm -rf ${{ matrix.config.target-path }} || true
           mkdir -p ${{ matrix.config.target-path }}
-          cp -r source_repo/target/linux/qualcommax/patches-6.6/. ${{ matrix.config.target-path }}
+          cp -r source_repo/target/linux/qualcommax/. ${{ matrix.config.target-path }}
           ls -la ${{ matrix.config.target-path }}  # 输出目标路径下的文件列表，用于调试
 
       - name: Check for changes
