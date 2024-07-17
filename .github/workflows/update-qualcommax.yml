@@ -59,7 +59,7 @@ jobs:
           git push origin HEAD:test
 
       - name: 删除工作流运行
-        uses: GitRML/delete-workflow-runs@test
+        uses: GitRML/delete-workflow-runs@main
         with:
           retain_days: 5
           keep_minimum_runs: 10
