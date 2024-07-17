@@ -13,7 +13,7 @@ jobs:
       matrix:
         config:
           - branch: main
-            target-path: qualcommax/patches-6.6
+            target-path: qualcommax
 
     steps:
       - name: Checkout the repository
@@ -55,11 +55,11 @@ jobs:
           git status  # 输出当前的 Git 状态，用于调试
 
           # Pull the latest changes to avoid conflicts
-          git pull origin main
-          git push origin HEAD:main
+          git pull origin test
+          git push origin HEAD:test
 
       - name: 删除工作流运行
-        uses: GitRML/delete-workflow-runs@main
+        uses: GitRML/delete-workflow-runs@test
         with:
           retain_days: 5
           keep_minimum_runs: 10
