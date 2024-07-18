@@ -55,8 +55,8 @@ jobs:
           git status  # 输出当前的 Git 状态，用于调试
 
           # Pull the latest changes to avoid conflicts
-          git pull origin test
-          git push origin HEAD:test
+          git pull origin main
+          git push origin HEAD:main
 
       - name: 删除工作流运行
         uses: GitRML/delete-workflow-runs@main
