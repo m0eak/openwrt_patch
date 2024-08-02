@@ -27,7 +27,7 @@ jobs:
 
       - name: Clone source repository
         run: |
-          git clone --depth 1  https://github.com/King-Of-Knights/openwrt-6.x.git lede
+          git clone --depth 1  https://github.com/coolsnowwolf/lede.git lede
         
         
 
