@@ -1,0 +1,68 @@
+name: Update patches
+
+on:
+  schedule:
+    - cron: '0 16 * * *'  # 每天的0点（+8时区）运行
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  update-patches:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        config:
+          - branch: main
+            target-path: Application
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Git to handle conflicts
+        run: |
+          git config pull.rebase false
+          git config user.email "github-actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Clone source repository
+        run: |
+          git clone --depth 1  https://github.com/King-Of-Knights/openwrt-6.x.git lede
+        
+        
+
+      - name: Copy target
+        run: |
+          rm -rf ${{ matrix.config.target-path }} || true
+          mkdir -p ${{ matrix.config.target-path }}
+          cp -r lede/package/lean/luci-app-leigod-acc/. ${{ matrix.config.target-path }}/luci-app-leigod-acc
+          ls -la ${{ matrix.config.target-path }}  # 输出目标路径下的文件列表，用于调试
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git add ${{ matrix.config.target-path }}
+          if git diff-index --quiet HEAD --; then
+            echo "changes=false" >> $GITHUB_ENV
+          else
+            echo "changes=true" >> $GITHUB_ENV
+          fi
+
+      - name: Show Git status
+        run: git status
+
+      - name: Commit and push changes
+        if: env.changes == 'true'
+        run: |
+          git commit -m "Update patches from ${{ matrix.config.branch }} on $(date +'%Y-%m-%d')"
+          git status  # 输出当前的 Git 状态，用于调试
+
+          # Pull the latest changes to avoid conflicts
+          git pull origin main
+          git push origin HEAD:main
+
+      - name: 删除工作流运行
+        uses: GitRML/delete-workflow-runs@main
+        with:
+          retain_days: 5
+          keep_minimum_runs: 10
