@@ -159,6 +159,14 @@
 			bias-pull-down;
 		};
 	};
+
+	usb_power: usb_power {
+		pins = "gpio23";
+		function = "gpio";
+		drive-strength = <8>;
+		output-high;
+		bias-pull-up;
+	};
 };
 
 &blsp1_uart3 {
@@ -217,7 +225,9 @@
 };
 
 &usb3 {
-	status = "okay";
+	pinctrl-0 = <&usb_power>;
+	pinctrl-names = "default";
+	status = "ok";
 };
 
 &mdio {
