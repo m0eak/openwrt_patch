@@ -27,8 +27,8 @@ jobs:
 
       - name: Clone source repository
         run: |
-          git clone --depth 1  https://github.com/coolsnowwolf/lede.git lede
-        
+          git clone --depth 1  --single-branch https://github.com/coolsnowwolf/lede.git lede
+          git clone --depth 1  --single-branch https://github.com/coolsnowwolf/luci.git lede_luci
         
 
       - name: Copy target
@@ -36,6 +36,7 @@ jobs:
           rm -rf ${{ matrix.config.target-path }} || true
           mkdir -p ${{ matrix.config.target-path }}
           cp -r lede/package/lean/luci-app-leigod-acc/. ${{ matrix.config.target-path }}/luci-app-leigod-acc
+          cp -r lede_luci/Application/luci-app-turboacc/. ${{ matrix.config.target-path }}/luci-app-turboacc
           ls -la ${{ matrix.config.target-path }}  # 输出目标路径下的文件列表，用于调试
 
       - name: Check for changes
