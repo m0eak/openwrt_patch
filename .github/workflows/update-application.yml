@@ -28,7 +28,7 @@ jobs:
       - name: Clone source repository
         run: |
           git clone --depth 1  --single-branch https://github.com/coolsnowwolf/lede.git lede
-          git clone --depth 1  --single-branch https://github.com/coolsnowwolf/luci.git lede_luci
+          git clone --depth 1  --single-branch  -b openwrt-23.05 https://github.com/coolsnowwolf/luci.git lede_luci
         
 
       - name: Copy target
