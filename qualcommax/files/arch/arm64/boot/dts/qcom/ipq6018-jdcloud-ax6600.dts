@@ -161,7 +161,7 @@
 	};
 
 	usb_power: usb_power {
-		pins = "gpio23";
+		pins = "gpio22";
 		function = "gpio";
 		drive-strength = <8>;
 		output-high;
