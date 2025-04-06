@@ -22,7 +22,7 @@
 	compatible = "glinet,gl-axt1800", "qcom,ipq6018", "qcom,ipq6018-cp03";
 
 	aliases {
-		sdhc0 = &sdhc_1;
+		sdhc0 = &sdhc;
 	};
 
 	V30:V30 {
@@ -113,7 +113,7 @@
 	status = "okay";
 };
 
-&sdhc_1 {
+&sdhc   {
 	pinctrl-0 = <&sd_pins>;
 	pinctrl-names = "default";
 	cd-gpios = <&tlmm 62 1>;
@@ -121,6 +121,24 @@
 	vqmmc-supply = <&V18>;
 	vmmc-supply = <&V30>;
 	status = "okay";
+};
+
+&dp1 {
+	status = "okay";
+	phy-handle = <&qca8075_0>;
+	label = "wan";
+};
+
+&dp2 {
+	status = "okay";
+	phy-handle = <&qca8075_1>;
+	label = "lan2";
+};
+
+&dp3 {
+	status = "okay";
+	phy-handle = <&qca8075_2>;
+	label = "lan1";
 };
 
 &wifi {

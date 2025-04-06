@@ -30,7 +30,7 @@
 	compatible = "jdcloud,ax1800-pro", "qcom,ipq6018-cp03", "qcom,ipq6018";
 
 	aliases {
-		sdhc1 = &sdhc_1;
+		sdhc = &sdhc;
 		serial0 = &blsp1_uart3;
 		led-boot = &status_red;
 		led-failsafe = &status_red;
@@ -313,26 +313,25 @@
 	status = "okay";
 };
 
-&sdhc_1 {
+&sdhc   {
 	status = "okay";
-
 	/delete-property/ mmc-hs400-1_8v;
 	mmc-hs200-1_8v;
 	mmc-ddr-1_8v;
 };
 
-&CPU0 {
+&cpu0 {
 	/delete-property/ cpu-supply;
 };
 
-&CPU1 {
+&cpu1 {
 	/delete-property/ cpu-supply;
 };
 
-&CPU2 {
+&cpu2 {
 	/delete-property/ cpu-supply;
 };
 
-&CPU3 {
+&cpu3 {
 	/delete-property/ cpu-supply;
 };

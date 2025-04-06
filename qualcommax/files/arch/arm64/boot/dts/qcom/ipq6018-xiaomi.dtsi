@@ -238,11 +238,11 @@
 };
 
 &qusb_phy_0 {
-	status = "ok";
+	status = "okay";
 };
 
 &ssphy_0 {
-	status = "ok";
+	status = "okay";
 };
 
 &usb2 {
@@ -250,5 +250,5 @@
 };
 
 &usb3 {
-	status = "ok";
+	status = "okay";
 };
