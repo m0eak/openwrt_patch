@@ -7,7 +7,7 @@
 	no-map;
 };
 
-&tz {
+&tz_region {
 	reg = <0x0 0x4a600000 0x0 0x00400000>;
 	no-map;
 };
