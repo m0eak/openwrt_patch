@@ -48,6 +48,19 @@ define Device/cambiumnetworks_xe3-4
 endef
 TARGET_DEVICES += cambiumnetworks_xe3-4
 
+define Device/cmiot_ax18
+	$(call Device/FitImage)
+	$(call Device/UbiFit)
+	DEVICE_VENDOR := CMIOT
+	DEVICE_MODEL := AX18
+	BLOCKSIZE := 128k
+	PAGESIZE := 2048
+	SOC := ipq6000
+	DEVICE_DTS_CONFIG := config@cp03-c1
+	DEVICE_PACKAGES := ipq-wifi-cmiot_ax18
+endef
+TARGET_DEVICES += cmiot_ax18
+
 define Device/glinet_gl-common
 	$(call Device/FitImage)
 	$(call Device/UbiFit)
@@ -161,6 +174,19 @@ define Device/qihoo_360v6
 endef
 TARGET_DEVICES += qihoo_360v6
 
+define Device/redmi_ax5
+	$(call Device/FitImage)
+	$(call Device/UbiFit)
+	DEVICE_VENDOR := Redmi
+	DEVICE_MODEL := AX5
+	BLOCKSIZE := 128k
+	PAGESIZE := 2048
+	SOC := ipq6000
+	DEVICE_DTS_CONFIG := config@cp03-c1
+	DEVICE_PACKAGES := ipq-wifi-redmi_ax5
+endef
+TARGET_DEVICES += redmi_ax5
+
 define Device/tplink_eap610-outdoor
 	$(call Device/FitImage)
 	$(call Device/UbiFit)
@@ -215,6 +241,19 @@ define Device/tplink_eap625-outdoor-hd-v1
 endef
 TARGET_DEVICES += tplink_eap625-outdoor-hd-v1
 
+define Device/xiaomi_ax1800
+	$(call Device/FitImage)
+	$(call Device/UbiFit)
+	DEVICE_VENDOR := Xiaomi
+	DEVICE_MODEL := AX1800
+	BLOCKSIZE := 128k
+	PAGESIZE := 2048
+	SOC := ipq6000
+	DEVICE_DTS_CONFIG := config@cp03-c1
+	DEVICE_PACKAGES := ipq-wifi-xiaomi_ax1800
+endef
+TARGET_DEVICES += xiaomi_ax1800
+
 define Device/yuncore_fap650
 	$(call Device/FitImage)
 	$(call Device/UbiFit)
@@ -229,3 +268,16 @@ define Device/yuncore_fap650
 	IMAGE/factory.ubin := append-ubi | qsdk-ipq-factory-nand
 endef
 TARGET_DEVICES += yuncore_fap650
+
+define Device/zn_m2
+	$(call Device/FitImage)
+	$(call Device/UbiFit)
+	DEVICE_VENDOR := ZN
+	DEVICE_MODEL := M2
+	BLOCKSIZE := 128k
+	PAGESIZE := 2048
+	SOC := ipq6000
+	DEVICE_DTS_CONFIG := config@cp03-c1
+	DEVICE_PACKAGES := ipq-wifi-zn_m2
+endef
+TARGET_DEVICES += zn_m2
