@@ -3,7 +3,7 @@
 PART_NAME=firmware
 REQUIRE_IMAGE_METADATA=1
 
-RAMFS_COPY_BIN='fw_printenv fw_setenv head'
+RAMFS_COPY_BIN='fw_printenv fw_setenv head seq'
 RAMFS_COPY_DATA='/etc/fw_env.config /var/lock/fw_printenv.lock'
 
 remove_oem_ubi_volume() {
@@ -156,6 +156,8 @@ platform_do_upgrade() {
 		;;
 	glinet,gl-ax1800|\
 	glinet,gl-axt1800|\
+	netgear,rbr350|\
+	netgear,rbs350|\
 	netgear,wax214)
 		nand_do_upgrade "$1"
 		;;
